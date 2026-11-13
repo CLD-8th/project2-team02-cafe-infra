@@ -7,7 +7,7 @@ locals {
   public_subnets = {
     for idx, az in var.azs :
     az => {
-      cidr = var.public_subnet_cidrs[idx]
+      cidr = cidrsubnet(var.vpc_cidr, 8, idx)
       az   = az
     }
   }
@@ -15,7 +15,7 @@ locals {
   private_subnets = {
     for idx, az in var.azs :
     az => {
-      cidr = var.private_subnet_cidrs[idx]
+      cidr = cidrsubnet(var.vpc_cidr, 8, idx + 10)
       az   = az
     }
   }
@@ -23,7 +23,7 @@ locals {
   isolated_subnets = {
     for idx, az in var.azs :
     az => {
-      cidr = var.isolated_subnet_cidrs[idx]
+      cidr = cidrsubnet(var.vpc_cidr, 8, idx + 20)
       az   = az
     }
   }
@@ -56,8 +56,9 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                     = "${var.name_prefix}-public-${each.key}"
-    "kubernetes.io/role/elb" = "1"
+  Name                                = "${var.name_prefix}-public-${each.key}"
+  "kubernetes.io/role/elb"            = "1"
+  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -70,8 +71,9 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name                              = "${var.name_prefix}-private-${each.key}"
-    "kubernetes.io/role/internal-elb" = "1"
+  Name                                      = "${var.name_prefix}-private-${each.key}"
+  "kubernetes.io/role/internal-elb"         = "1"
+  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -105,6 +107,7 @@ resource "aws_internet_gateway" "this" {
 # ------------------------------------
 
 resource "aws_eip" "nat" {
+  count  = var.enable_nat ? 1 : 0
   domain = "vpc"
 
   tags = {
@@ -113,7 +116,9 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "this" {
-  allocation_id = aws_eip.nat.id
+  count = var.enable_nat ? 1 : 0
+
+  allocation_id = aws_eip.nat[0].id
   subnet_id     = aws_subnet.public[var.azs[0]].id
 
   depends_on = [
@@ -137,10 +142,12 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route" "public_internet" {
-  route_table_id         = aws_route_table.public.id
+resource "aws_route" "private_internet" {
+  count = var.enable_nat ? 1 : 0
+
+  route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.this.id
+  nat_gateway_id         = aws_nat_gateway.this[0].id
 }
 
 # ------------------------------------
