@@ -16,3 +16,8 @@ output "rds_secret_arn" {
   description = "RDS 관리형 암호 ARN — eks 루트 ESO 역할의 Resource · ExternalSecret 이 읽음"
   value       = module.rds.secret_arn
 }
+
+output "app_secret_arn" {
+  description = "앱 비밀 그릇 ARN — eks 루트 ESO 역할의 Resource · ExternalSecret 이 읽음"
+  value       = aws_secretsmanager_secret.app.arn
+}

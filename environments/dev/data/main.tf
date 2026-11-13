@@ -22,5 +22,6 @@ module "rds" {
   security_group_ids = [local.net.db_sg_id]
   instance_class     = var.db_instance_class
   multi_az           = var.db_multi_az
+  db_name            = "cafe"
 }
 
