@@ -14,12 +14,15 @@ locals {
 module "network" {
   source = "../../../modules/network"
 
-  name_prefix  = local.name_prefix
-  vpc_cidr     = var.vpc_cidr
-  azs          = local.azs
-  enable_nat   = var.enable_nat
-  single_nat   = var.single_nat
-  cluster_name = local.cluster_name
+  name_prefix           = local.name_prefix
+  vpc_cidr              = var.vpc_cidr
+  azs                   = local.azs
+  public_subnet_cidrs   = var.public_subnet_cidrs
+  private_subnet_cidrs  = var.private_subnet_cidrs
+  isolated_subnet_cidrs = var.isolated_subnet_cidrs
+  enable_nat            = var.enable_nat
+  single_nat            = var.single_nat
+  cluster_name          = local.cluster_name
 }
 
 # ---- 보안 그룹 3 (alb · app · db) — ALB → app 8080 → db 3306
