@@ -1,0 +1,6 @@
+team_id     = "team02"
+owner       = "hkm27"
+team_number = "22"
+vpc_cidr    = "10.202.0.0/16"
+enable_nat  = true
+single_nat  = true
