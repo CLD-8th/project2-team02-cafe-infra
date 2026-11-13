@@ -48,3 +48,25 @@ variable "isolated_subnet_cidrs" {
     error_message = "Isolated Subnet CIDR 개수는 AZ 개수와 같아야 합니다."
   }
 }
+
+variable "enable_nat" {
+  description = "NAT Gateway 생성 여부"
+  type        = bool
+  default     = true
+}
+
+variable "single_nat" {
+  description = "단일 NAT Gateway 사용 여부"
+  type        = bool
+  default     = true
+
+  validation {
+    condition     = var.single_nat
+    error_message = "현재 Network 모듈은 단일 NAT Gateway만 지원합니다."
+  }
+}
+
+variable "cluster_name" {
+  description = "EKS 클러스터 이름"
+  type        = string
+}
