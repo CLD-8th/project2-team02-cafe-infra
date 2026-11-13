@@ -1,0 +1,6 @@
+team_id     = "<값>"
+owner       = "<값>"
+team_number = "<값>"
+
+node_desired_size   = 2
+enable_ecr_endpoint = false
