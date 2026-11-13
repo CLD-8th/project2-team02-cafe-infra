@@ -1,3 +1,4 @@
+
 output "alb_sg_id" {
   description = "ALB Security Group ID"
   value       = aws_security_group.alb.id
@@ -10,5 +11,10 @@ output "app_sg_id" {
 
 output "rds_sg_id" {
   description = "RDS Security Group ID"
+  value       = aws_security_group.rds.id
+}
+
+output "db_sg_id" {
+  description = "RDS MySQL Security Group ID"
   value       = aws_security_group.rds.id
 }
