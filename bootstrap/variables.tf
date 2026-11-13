@@ -36,7 +36,7 @@ variable "region" {
 variable "bucket_date" {
   type        = string
   description = "버킷을 만든 날짜 — S3 이름은 전 세계에서 유일해야 해서 붙임"
-  default     = "20261113"
+  default     = "20261112"
 }
 
 variable "admin_users" {
