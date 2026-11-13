@@ -56,9 +56,9 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-  Name                                = "${var.name_prefix}-public-${each.key}"
-  "kubernetes.io/role/elb"            = "1"
-  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    Name                                        = "${var.name_prefix}-public-${each.key}"
+    "kubernetes.io/role/elb"                    = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -71,9 +71,9 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
 
   tags = {
-  Name                                      = "${var.name_prefix}-private-${each.key}"
-  "kubernetes.io/role/internal-elb"         = "1"
-  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    Name                                        = "${var.name_prefix}-private-${each.key}"
+    "kubernetes.io/role/internal-elb"           = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -142,12 +142,10 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route" "private_internet" {
-  count = var.enable_nat ? 1 : 0
-
-  route_table_id         = aws_route_table.private.id
+resource "aws_route" "public_internet" {
+  route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.this[0].id
+  gateway_id             = aws_internet_gateway.this.id
 }
 
 # ------------------------------------
@@ -163,9 +161,11 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private_internet" {
+  count = var.enable_nat ? 1 : 0
+
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.this.id
+  nat_gateway_id         = aws_nat_gateway.this[0].id
 }
 
 # ------------------------------------

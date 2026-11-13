@@ -49,3 +49,18 @@ variable "single_nat" {
   description = "true 면 NAT 1개(public-a) — 팀당 NAT 1개 규칙"
   default     = true
 }
+
+variable "public_subnet_cidrs" {
+  type        = list(string)
+  description = "public 서브넷 2개 (a · c) — ALB · NAT"
+}
+
+variable "private_subnet_cidrs" {
+  type        = list(string)
+  description = "private 서브넷 2개 (a · c) — EKS Node"
+}
+
+variable "isolated_subnet_cidrs" {
+  type        = list(string)
+  description = "isolated 서브넷 2개 (a · c) — RDS"
+}

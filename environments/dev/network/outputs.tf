@@ -4,6 +4,11 @@ output "vpc_id" {
   value       = module.network.vpc_id
 }
 
+output "vpc_cidr" {
+  description = "VPC 대역 — eks 루트 ECR Endpoint 보안 그룹"
+  value       = module.network.vpc_cidr
+}
+
 output "public_subnet_ids" {
   description = "public 서브넷 2개 — ALB"
   value       = module.network.public_subnet_ids
