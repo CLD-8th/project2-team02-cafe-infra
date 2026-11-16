@@ -7,7 +7,7 @@ locals {
   public_subnets = {
     for idx, az in var.azs :
     az => {
-      cidr = cidrsubnet(var.vpc_cidr, 8, idx)
+      cidr = var.public_subnet_cidrs[idx]
       az   = az
     }
   }
@@ -15,7 +15,7 @@ locals {
   private_subnets = {
     for idx, az in var.azs :
     az => {
-      cidr = cidrsubnet(var.vpc_cidr, 8, idx + 10)
+      cidr = var.private_subnet_cidrs[idx]
       az   = az
     }
   }
@@ -23,7 +23,7 @@ locals {
   isolated_subnets = {
     for idx, az in var.azs :
     az => {
-      cidr = cidrsubnet(var.vpc_cidr, 8, idx + 20)
+      cidr = var.isolated_subnet_cidrs[idx]
       az   = az
     }
   }
