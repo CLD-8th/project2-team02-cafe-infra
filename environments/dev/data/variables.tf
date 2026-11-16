@@ -36,7 +36,7 @@ variable "region" {
 variable "state_bucket" {
   type        = string
   description = "network 루트의 state 가 있는 팀 버킷"
-  default     = "team02-tfstate-20261112"
+  default     = "team02-tfstate-20261113"
 }
 
 variable "db_instance_class" {
