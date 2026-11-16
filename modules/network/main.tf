@@ -23,7 +23,7 @@ locals {
   isolated_subnets = {
     for idx, az in var.azs :
     az => {
-      cidr = var.var.isolated_subnet_cidrs[idx]
+      cidr = var.isolated_subnet_cidrs[idx]
       az   = az
     }
   }
