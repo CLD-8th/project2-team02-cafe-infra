@@ -36,7 +36,7 @@ variable "region" {
 variable "state_bucket" {
   type        = string
   description = "state 버킷 — remote_state 가 읽는 곳 (backend.tf 와 같은 값)"
-  default     = "team02-tfstate-20261112"
+  default     = "team02-tfstate-20261113"
 }
 
 variable "kubernetes_version" {
