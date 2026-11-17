@@ -21,3 +21,7 @@ output "app_secret_arn" {
   description = "앱 비밀 그릇 ARN — eks 루트 ESO 역할의 Resource · ExternalSecret 이 읽음"
   value       = aws_secretsmanager_secret.app.arn
 }
+
+output "monitoring_secret_arn" {
+  value = aws_secretsmanager_secret.monitoring.arn
+}

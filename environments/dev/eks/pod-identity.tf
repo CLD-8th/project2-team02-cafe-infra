@@ -105,7 +105,7 @@ resource "aws_eks_pod_identity_association" "app" {
   role_arn        = aws_iam_role.app.arn
 }
 
-# ---- ④ ESO 역할 — 비밀 2개만 읽기 (RDS 관리형 암호 · 앱 비밀 그릇 · data 출력)
+# ---- ④ ESO 역할 — 비밀 3개만 읽기 (RDS 관리형 암호 · 앱 · 모니터링 비밀 그릇 · data 출력)
 data "aws_iam_policy_document" "eso" {
   statement {
     sid    = "ReadAppSecrets"
@@ -117,6 +117,7 @@ data "aws_iam_policy_document" "eso" {
     resources = [
       local.db.rds_secret_arn,
       local.db.app_secret_arn,
+      local.db.monitoring_secret_arn,
     ]
   }
 }
