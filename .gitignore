@@ -11,3 +11,6 @@ crash.*.log
 .env
 .env.*
 *.pem
+
+# 모듈 폴더에서 init 하면 생기는 lock 파일 — 루트만 커밋
+modules/**/.terraform.lock.hcl
