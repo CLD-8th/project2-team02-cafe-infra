@@ -55,17 +55,27 @@ module "eks" {
   enable_irsa = false
 
   # ---- 4 단계 애드온
+  # 애드온 버전 고정 — 비워 두면 모듈이 최신 버전을 골라 AWS 새 버전이 나올 때마다 plan 에 차이가 생김
   addons = {
     vpc-cni = {
+      addon_version  = "v1.23.3-eksbuild.1"
       before_compute = true
     }
     eks-pod-identity-agent = {
+      addon_version  = "v1.4.1-eksbuild.3"
       before_compute = true
     }
-    kube-proxy     = {}
-    coredns        = {}
-    metrics-server = {}
+    kube-proxy = {
+      addon_version = "v1.36.0-eksbuild.65"
+    }
+    coredns = {
+      addon_version = "v1.14.7-eksbuild.35"
+    }
+    metrics-server = {
+      addon_version = "v0.9.1-eksbuild.2"
+    }
     aws-ebs-csi-driver = {
+      addon_version = "v1.68.0-eksbuild.1"
       pod_identity_association = [
         {
           role_arn        = aws_iam_role.ebs_csi.arn
